@@ -17,6 +17,7 @@ public class ExcelRow {
     private ExcelSheet sheet;
 
     public ExcelRow(ExcelSheet sheet,XSSFRow row) {
+        this.sheet = sheet;
         this.row = row;
     }
 
