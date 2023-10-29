@@ -17,6 +17,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
+
+/**
+ * 适用于XLS（HSSF）格式的图片创建器
+ * @param <T> 创建本对象的类型
+ */
 public class ExcelXLSPicture<T> {
 
     private ClientAnchor anchor;
@@ -33,6 +38,14 @@ public class ExcelXLSPicture<T> {
         this.parent = from;
     }
 
+    /**
+     * 指定图片的位置
+     * @param rowBegin 图片将会从此行开始
+     * @param colBegin 图片将会从此列开始
+     * @param rowEnd 图片将会在此行结束
+     * @param colEnd 图片将会在此列结束
+     * @return 本对象
+     */
     public ExcelXLSPicture<T> position(int rowBegin, int colBegin, int rowEnd, int colEnd) {
         anchor.setCol1(colBegin);
         anchor.setCol2(colEnd);
@@ -41,10 +54,22 @@ public class ExcelXLSPicture<T> {
         return this;
     }
 
+    /**
+     * 修改图像插入的单元格位置
+     * @param row 图片将会出现在此行
+     * @param col 图片将会出现在此列
+     * @return 本对象。
+     */
     public ExcelXLSPicture<T> position(int row, int col) {
         return position(row,col,row,col);
     }
 
+    /**
+     * 跨行跨列处理
+     * @param rowSpan 图片的纵向跨行数
+     * @param colSpan 图片的横向跨列数
+     * @return 本对象
+     */
     public ExcelXLSPicture<T> cross(int rowSpan, int colSpan) {
         return position(
                 anchor.getRow1(),
@@ -54,6 +79,11 @@ public class ExcelXLSPicture<T> {
         );
     }
 
+    /**
+     * 图像的内容，需要一个File
+     * @param file 图片文件
+     * @return 本对象
+     */
     public ExcelXLSPicture<T> file(File file) {
         try {
             BufferedImage image = ImageIO.read(file);
@@ -74,6 +104,10 @@ public class ExcelXLSPicture<T> {
         return this;
     }
 
+    /**
+     * 结束插入，返回上层
+     * @return 创建本对象的对象。
+     */
     public T back() {
         return parent;
     }
