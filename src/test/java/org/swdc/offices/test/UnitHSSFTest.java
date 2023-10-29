@@ -1,61 +1,29 @@
 package org.swdc.offices.test;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.swdc.offices.CellPresetFunction;
+import org.swdc.offices.xls.ExcelXLSCell;
+import org.swdc.offices.xls.ExcelXLSSheet;
 import org.swdc.offices.xlsx.ExcelCell;
 import org.swdc.offices.xlsx.ExcelSheet;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class UnitExcelTest {
-
-    public static class Person {
-
-        private String name;
-
-        private String age;
-
-        private String gender;
-
-        private String birthDay;
-
-        public Person(String name, String age, String gender, String birthDay) {
-            this.age = age;
-            this.birthDay = birthDay;
-            this.gender = gender;
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getAge() {
-            return age;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public String getBirthDay() {
-            return birthDay;
-        }
-
-    }
+public class UnitHSSFTest {
 
     public static void main(String[] args) throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        ExcelXLSSheet sheet = new ExcelXLSSheet(workbook,"Sheet A");
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        ExcelSheet sheet = new ExcelSheet(workbook,"Sheet A");
-
-        CellPresetFunction<ExcelCell> presetField = c -> c.font()
+        CellPresetFunction<ExcelXLSCell> presetField = c -> c.font()
                 .bold(true)
                 .back()
                 .alignVerticalCenter();
@@ -86,12 +54,11 @@ public class UnitExcelTest {
                         .text(e)
                 ).nextRow()
                 .cell(0).picture().file(
-                        new File("test.png"),
-                        Workbook.PICTURE_TYPE_PNG
+                        new File("test.png")
                 ).cross(2,2)
                 .back().backToRow();
 
-        workbook.write(new FileOutputStream("test.xlsx"));
+        workbook.write(new FileOutputStream("test.xls"));
     }
 
 }

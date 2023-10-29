@@ -50,7 +50,7 @@ public class ExcelCell {
                 );
     }
 
-    public ExcelCell preset(CellPresetFunction preset) {
+    public ExcelCell preset(CellPresetFunction<ExcelCell> preset) {
         return preset.accept(this);
     }
 

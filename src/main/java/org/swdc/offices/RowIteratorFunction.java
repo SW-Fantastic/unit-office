@@ -2,8 +2,8 @@ package org.swdc.offices;
 
 import org.swdc.offices.xlsx.ExcelCell;
 
-public interface RowIteratorFunction<E> {
+public interface RowIteratorFunction<E,C> {
 
-    ExcelCell accept(ExcelCell cell, E element);
+    C accept(C cell, E element);
 
 }

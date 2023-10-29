@@ -4,6 +4,14 @@ import java.awt.*;
 
 public class UIUtils {
 
+    private static String repeatStr(String str, int times) {
+        StringBuilder sb = new StringBuilder();
+        for (int idx = 0; idx < times; idx ++) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
     public static Color fromString(String colorStr) {
         colorStr = colorStr.toLowerCase();
         if (colorStr.startsWith("#")) {
@@ -12,9 +20,9 @@ public class UIUtils {
             if (colorStr.length() == 3) {
                 // RGB
                 return new Color(
-                        Integer.parseInt(colorStr.substring(0,1).repeat(2),16),
-                        Integer.parseInt(colorStr.substring(1,2).repeat(2),16),
-                        Integer.parseInt(colorStr.substring(2).repeat(2),16)
+                        Integer.parseInt(repeatStr(colorStr.substring(0,1),2),16),
+                        Integer.parseInt(repeatStr(colorStr.substring(1,2),2),16),
+                        Integer.parseInt(repeatStr(colorStr.substring(2),2),16)
                 );
             } else if (colorStr.length() == 6) {
                 // 两位RGB

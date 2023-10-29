@@ -7,8 +7,8 @@ import org.swdc.offices.xlsx.ExcelCell;
  * 你可以通过本方法为样式复杂的Cell提供一套预设，
  * 并且在通过preset方法应用到Cell中。
  */
-public interface CellPresetFunction {
+public interface CellPresetFunction<T> {
 
-    ExcelCell accept(ExcelCell cell);
+    T accept(T cell);
 
 }

@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.Files;
 
 public class ExcelPicture<T> {
 
@@ -46,8 +47,7 @@ public class ExcelPicture<T> {
 
     public ExcelPicture<T> file(File file, int type) {
         try {
-            FileInputStream fin = new FileInputStream(file);
-            byte[] data = fin.readAllBytes();
+            byte[] data = Files.readAllBytes(file.toPath());
             XSSFDrawing drawing = sheet.createDrawingPatriarch();
             int pictureIndex = sheet.getWorkbook().addPicture(data,type);
             XSSFPicture picture = drawing.createPicture(anchor,pictureIndex);
