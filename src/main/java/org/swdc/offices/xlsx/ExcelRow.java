@@ -3,6 +3,8 @@ package org.swdc.offices.xlsx;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.swdc.offices.CellPresetFunction;
+import org.swdc.offices.RowIteratorFunction;
 
 import java.util.Collection;
 

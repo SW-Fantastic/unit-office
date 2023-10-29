@@ -1,12 +1,10 @@
 package org.swdc.offices.xlsx;
 
-import org.apache.poi.common.usermodel.PictureType;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
+import org.swdc.offices.CellPresetFunction;
 import org.swdc.offices.UIUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Date;
 
 public class ExcelCell {
