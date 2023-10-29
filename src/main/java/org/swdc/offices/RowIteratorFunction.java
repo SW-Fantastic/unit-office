@@ -1,9 +1,19 @@
 package org.swdc.offices;
 
-import org.swdc.offices.xlsx.ExcelCell;
 
+/**
+ * Row迭代接口，用于循环生成Excel的一行数据
+ * @param <E> Data Element
+ * @param <C> Excel Cell
+ */
 public interface RowIteratorFunction<E,C> {
 
+    /**
+     *
+     * @param cell Excel的cell，请以它为起点开始本行数据的生成
+     * @param element 当前的数据对象，类型取决于你提供的对象的类型。
+     * @return ExcelCell，请返回本行生成的最后一个Cell作为结束。
+     */
     C accept(C cell, E element);
 
 }

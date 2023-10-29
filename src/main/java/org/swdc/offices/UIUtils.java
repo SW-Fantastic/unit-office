@@ -4,6 +4,12 @@ import java.awt.*;
 
 public class UIUtils {
 
+    /**
+     * 工具方法，用于将字符串进行重复（用于兼容Java8）
+     * @param str string
+     * @param times 重复的次数
+     * @return 重复的结果
+     */
     private static String repeatStr(String str, int times) {
         StringBuilder sb = new StringBuilder();
         for (int idx = 0; idx < times; idx ++) {
@@ -12,6 +18,14 @@ public class UIUtils {
         return sb.toString();
     }
 
+    /**
+     * 常见的String转AWT Color的方法。
+     * @param colorStr Color字符串，
+     *                 支持三位Hex，例如：#FFF，
+     *                 支持六位Hex，例如#CECECE，
+     *                 支持rgb和rgba表达式，例如rgb(0,0,0)
+     * @return awt Color
+     */
     public static Color fromString(String colorStr) {
         colorStr = colorStr.toLowerCase();
         if (colorStr.startsWith("#")) {
