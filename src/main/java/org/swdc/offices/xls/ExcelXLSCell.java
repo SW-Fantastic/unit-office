@@ -162,7 +162,7 @@ public class ExcelXLSCell {
      * @return 本cell
      */
     private ExcelXLSCell appendColor(String color, Consumer<HSSFColor> colorConsumer) {
-        if (color == null || color.isBlank()) {
+        if (color == null || color.isEmpty()) {
             return this;
         }
         Color awtColor = UIUtils.fromString(color);
