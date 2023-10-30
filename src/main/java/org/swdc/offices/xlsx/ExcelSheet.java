@@ -1,5 +1,6 @@
 package org.swdc.offices.xlsx;
 
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -40,6 +41,22 @@ public class ExcelSheet {
             throw new RuntimeException("column can not less than zero!");
         }
         sheet.setColumnWidth(column,val);
+        return this;
+    }
+
+    public ExcelSheet mergeCells(int row,int column, int rowSpan, int colSpan) {
+        CellRangeAddress address = new CellRangeAddress(row,row + rowSpan,column,column + colSpan);
+        for( CellRangeAddress addr : sheet.getMergedRegions() ) {
+            if (
+                    addr.getFirstRow() == address.getFirstRow() &&
+                    addr.getFirstColumn() == address.getFirstColumn() &&
+                    addr.getLastRow() == address.getLastRow() &&
+                    addr.getLastColumn() == address.getLastColumn()
+            ) {
+                return this;
+            }
+        }
+        sheet.addMergedRegion(address);
         return this;
     }
 

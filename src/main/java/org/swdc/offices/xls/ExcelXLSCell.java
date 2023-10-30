@@ -109,10 +109,7 @@ public class ExcelXLSCell {
      */
     private HSSFCellStyle getStyle() {
         if(this.style == null) {
-            style = cell.getRow()
-                    .getSheet()
-                    .getWorkbook()
-                    .createCellStyle();
+            style = cell.getCellStyle();
         }
         return style;
     }
@@ -201,6 +198,7 @@ public class ExcelXLSCell {
     public ExcelXLSCell borderLeft(BorderStyle style) {
         HSSFCellStyle xsStyle = getStyle();
         xsStyle.setBorderLeft(style);
+        cell.setCellStyle(xsStyle);
         return this;
     }
 
@@ -213,6 +211,7 @@ public class ExcelXLSCell {
         return appendColor(color, c-> {
             HSSFCellStyle xsStyle = getStyle();
             xsStyle.setLeftBorderColor(c.getIndex());
+            cell.setCellStyle(xsStyle);
         });
     }
 
@@ -224,6 +223,7 @@ public class ExcelXLSCell {
     public ExcelXLSCell borderRight(BorderStyle style) {
         HSSFCellStyle xsStyle = getStyle();
         xsStyle.setBorderRight(style);
+        cell.setCellStyle(xsStyle);
         return this;
     }
 
@@ -236,6 +236,7 @@ public class ExcelXLSCell {
         HSSFCellStyle xsStyle = getStyle();
         return this.appendColor(color,c -> {
             xsStyle.setRightBorderColor(c.getIndex());
+            cell.setCellStyle(xsStyle);
         });
     }
 
@@ -248,6 +249,7 @@ public class ExcelXLSCell {
     public ExcelXLSCell borderTop(BorderStyle style) {
         HSSFCellStyle xssStyle = getStyle();
         xssStyle.setBorderTop(style);
+        cell.setCellStyle(xssStyle);
         return this;
     }
 
@@ -260,6 +262,7 @@ public class ExcelXLSCell {
         return appendColor(color, c-> {
             HSSFCellStyle xsStyle = getStyle();
             xsStyle.setTopBorderColor(c.getIndex());
+            cell.setCellStyle(style);
         });
     }
 
@@ -271,6 +274,7 @@ public class ExcelXLSCell {
     public ExcelXLSCell borderBottom(BorderStyle style) {
         HSSFCellStyle xssStyle = getStyle();
         xssStyle.setBorderBottom(style);
+        cell.setCellStyle(xssStyle);
         return this;
     }
 
@@ -283,6 +287,7 @@ public class ExcelXLSCell {
        return appendColor(color, c -> {
            HSSFCellStyle xsStyle = getStyle();
            xsStyle.setBottomBorderColor(c.getIndex());
+           cell.setCellStyle(xsStyle);
        });
     }
 
@@ -299,6 +304,7 @@ public class ExcelXLSCell {
         xssStyle.setBorderRight(style);
         xssStyle.setBorderLeft(style);
         xssStyle.setBorderTop(style);
+        cell.setCellStyle(xssStyle);
 
         return this;
     }

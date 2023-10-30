@@ -67,29 +67,16 @@ public class UnitExcelTest {
                 "RTO", "Others"
         );
 
-        sheet.rowAt(0).presetCell(presetField)
-                .cell(1).text("To:").nextCell().text("Surbana Juyron Consulatans Ple Ltd")
-                .backToRow().nextRow().cell(2).text("168 Jalan Bukit merah")
-                .backToRow().nextRow().cell(2).text("singepore 00000")
-                .backToRow().nextRow(2).cell(1).preset(presetField).text("Attn:").nextCell().text("Mr xxx, Mr xxxx")
-                .backToRow().nextRow(2).cell(1).preset(presetField).text("Thru:").nextCell().text("Ms Lee Eng mui(Manager)")
-                .backToRow().prevRow(6).cell(12).preset(presetField).text("RFI Ref").nextCell().text("BHC")
-                .backToRow().nextRow().cell(12).text("Date:").nextCell().text("5/23/2001")
-                .backToRow().nextRow().cell(12).text("Your Fax No:").nextCell().text("")
-                .backToRow().nextRow().cell(12).text("By:").nextCell().text("Fax / Email / Hard")
-                .backToRow().nextRow().cell(12).text("Our fax no:").nextCell().text("")
-                .backToRow().nextRow().cell(12).text("No of pages:").nextCell().text("12")
-                .backToRow().prevRow(5).forOf(items, (c,e) -> c
-                        .cellAt(19)
-                        .border(BorderStyle.THIN)
-                        .borderColor("#000")
-                        .text(e)
-                ).nextRow()
-                .cell(0).picture().file(
-                        new File("test.png"),
-                        Workbook.PICTURE_TYPE_PNG
-                ).cross(2,2)
-                .back().backToRow();
+
+        for (int j = 25+15;j<24+15+29;j++){
+            for (int i = 3;i<=18;i++){
+                sheet.rowAt(j).cell(i).borderTop(BorderStyle.MEDIUM).borderColor("#000").backToRow()
+                        .cell(i).borderLeft(BorderStyle.MEDIUM).borderColor("#000").backToRow()
+                        .cell(i).borderRight(BorderStyle.MEDIUM).borderColor("#000").backToRow()
+                        .cell(i).borderBottom(BorderStyle.MEDIUM).borderColor("#000");
+
+            }
+        }
 
         workbook.write(new FileOutputStream("test.xlsx"));
     }
