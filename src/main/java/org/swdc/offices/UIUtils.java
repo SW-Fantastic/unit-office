@@ -1,5 +1,9 @@
 package org.swdc.offices;
 
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+
 import java.awt.*;
 
 public class UIUtils {
@@ -84,5 +88,30 @@ public class UIUtils {
         }
         return null;
     }
+
+    /**
+     * 在工作簿的调色板读取或增加自定义的颜色，
+     * 内部API，不给用户访问。
+     *
+     * @param color awt颜色
+     * @return 单元格颜色
+     */
+    public static HSSFColor prepareHSSFColor(HSSFWorkbook workbook, Color color) {
+        HSSFPalette palette = workbook.getCustomPalette();
+        HSSFColor target = palette.findColor(
+                (byte) color.getRed(),
+                (byte) color.getGreen(),
+                (byte) color.getBlue()
+        );
+        if (target != null) {
+            return target;
+        }
+        return palette.addColor(
+                (byte) color.getRed(),
+                (byte) color.getGreen(),
+                (byte) color.getBlue()
+        );
+    }
+
 
 }

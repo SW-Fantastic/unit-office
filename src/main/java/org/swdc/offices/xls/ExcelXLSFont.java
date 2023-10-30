@@ -91,22 +91,6 @@ public class ExcelXLSFont<T> {
         return this;
     }
 
-    private HSSFColor addColor(Color color) {
-        HSSFPalette palette = sheet.getWorkbook().getCustomPalette();
-        HSSFColor target = palette.findColor(
-                (byte) color.getRed(),
-                (byte) color.getGreen(),
-                (byte) color.getBlue()
-        );
-        if (target != null) {
-            return target;
-        }
-        return palette.addColor(
-                (byte) color.getRed(),
-                (byte) color.getGreen(),
-                (byte) color.getBlue()
-        );
-    }
 
     /**
      * 修改字体颜色
@@ -121,7 +105,10 @@ public class ExcelXLSFont<T> {
         if (theColor == null) {
             return this;
         }
-        HSSFColor realColor = addColor(theColor);
+        HSSFColor realColor = UIUtils.prepareHSSFColor(
+                sheet.getWorkbook(),
+                theColor
+        );
         if (realColor == null) {
             return this;
         }

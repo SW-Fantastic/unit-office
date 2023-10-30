@@ -255,10 +255,33 @@ public class ExcelCell {
      * @return 本cell
      */
     public ExcelCell borderBottomColor(String color) {
-        XSSFCellStyle xsStyle = getStyle();
-        xsStyle.setBottomBorderColor(new XSSFColor(UIUtils.fromString(color),null));
-        cell.setCellStyle(xsStyle);
-        return this;
+        return appendColor(color, c -> {
+            XSSFCellStyle xsStyle = getStyle();
+            xsStyle.setBottomBorderColor(new XSSFColor(c,null));
+            cell.setCellStyle(xsStyle);
+        });
+    }
+
+    /**
+     * 创建一个形状
+     * @return 形状创建器。
+     */
+    public ExcelShape<ExcelCell> shape() {
+        return new ExcelShape<>(cell.getSheet(),this)
+                .position(cell.getRowIndex(),cell.getColumnIndex());
+    }
+
+    /**
+     * 设置背景色
+     * @param color color字符串
+     * @return 本cell
+     */
+    public ExcelCell backgroundColor(String color) {
+        return appendColor(color, c -> {
+            XSSFCellStyle cellStyle = getStyle();
+            cellStyle.setFillBackgroundColor(new XSSFColor(c,null));
+            cell.setCellStyle(cellStyle);
+        });
     }
 
     /**

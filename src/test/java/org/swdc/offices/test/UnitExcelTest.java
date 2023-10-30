@@ -73,7 +73,7 @@ public class UnitExcelTest {
                 sheet.rowAt(j).cell(i).borderTop(BorderStyle.MEDIUM).borderColor("#000").backToRow()
                         .cell(i).borderLeft(BorderStyle.MEDIUM).borderColor("#000").backToRow()
                         .cell(i).borderRight(BorderStyle.MEDIUM).borderColor("#000").backToRow()
-                        .cell(i).borderBottom(BorderStyle.MEDIUM).borderColor("#000");
+                        .cell(i).borderBottom(BorderStyle.MEDIUM).borderColor("#000").shape().ellipse().color("#000").cross(2,1);
 
             }
         }

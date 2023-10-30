@@ -47,6 +47,7 @@ public class UnitHSSFTest {
                 .backToRow().nextRow().cell(12).text("By:").nextCell().text("Fax / Email / Hard")
                 .backToRow().nextRow().cell(12).text("Our fax no:").nextCell().text("")
                 .backToRow().nextRow().cell(12).text("No of pages:").nextCell().text("12")
+                .shape().roundedRect().color("#4B8FFF").cross(1,1).back()
                 .backToRow().prevRow(5).forOf(items, (c,e) -> c
                         .cellAt(19)
                         .border(BorderStyle.THIN)

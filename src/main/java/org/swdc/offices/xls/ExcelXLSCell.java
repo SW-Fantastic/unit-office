@@ -6,8 +6,11 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.swdc.offices.CellPresetFunction;
 import org.swdc.offices.UIUtils;
+import org.swdc.offices.xlsx.ExcelCell;
 
 import java.awt.Color;
 import java.util.Date;
@@ -137,19 +140,9 @@ public class ExcelXLSCell {
      * @return 单元格颜色
      */
     private HSSFColor addColor(Color color) {
-        HSSFPalette palette = cell.getSheet().getWorkbook().getCustomPalette();
-        HSSFColor target = palette.findColor(
-                (byte) color.getRed(),
-                (byte) color.getGreen(),
-                (byte) color.getBlue()
-        );
-        if (target != null) {
-            return target;
-        }
-        return palette.addColor(
-                (byte) color.getRed(),
-                (byte) color.getGreen(),
-                (byte) color.getBlue()
+        return UIUtils.prepareHSSFColor(
+                cell.getSheet().getWorkbook(),
+                color
         );
     }
 
@@ -189,6 +182,20 @@ public class ExcelXLSCell {
             cell.setCellStyle(style);
         },this);
     }
+
+    /**
+     * 设置背景色
+     * @param color color字符串
+     * @return 本cell
+     */
+    public ExcelXLSCell backgroundColor(String color) {
+        return appendColor(color, c -> {
+            HSSFCellStyle cellStyle = getStyle();
+            cellStyle.setFillBackgroundColor(c);
+            cell.setCellStyle(cellStyle);
+        });
+    }
+
 
     /**
      * 修改左侧边框样式
@@ -238,6 +245,15 @@ public class ExcelXLSCell {
             xsStyle.setRightBorderColor(c.getIndex());
             cell.setCellStyle(xsStyle);
         });
+    }
+
+    /**
+     * 创建形状
+     * @return 形状创建器
+     */
+    public ExcelXLSShape<ExcelXLSCell> shape() {
+        return new ExcelXLSShape<>(cell.getSheet(),this)
+                .position(cell.getRowIndex(), cell.getColumnIndex());
     }
 
 
