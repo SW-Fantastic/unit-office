@@ -2,16 +2,11 @@ package org.swdc.offices.test;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.swdc.offices.CellPresetFunction;
 import org.swdc.offices.xls.ExcelXLSCell;
 import org.swdc.offices.xls.ExcelXLSSheet;
-import org.swdc.offices.xlsx.ExcelCell;
-import org.swdc.offices.xlsx.ExcelSheet;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;

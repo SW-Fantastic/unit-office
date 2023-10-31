@@ -1,17 +1,18 @@
 package org.swdc.offices.test;
 
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.swdc.offices.CellPresetFunction;
+import org.swdc.offices.generator.PipedExcelGenerator;
+import org.swdc.offices.generator.PipedGenerationContext;
 import org.swdc.offices.xlsx.ExcelCell;
+import org.swdc.offices.generator.ExcelSimpleGenerator;
+import org.swdc.offices.xlsx.ExcelRow;
 import org.swdc.offices.xlsx.ExcelSheet;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class UnitExcelTest {
 
@@ -50,35 +51,107 @@ public class UnitExcelTest {
 
     }
 
-    public static void main(String[] args) throws IOException {
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        ExcelSheet sheet = new ExcelSheet(workbook,"Sheet A");
+    public static class DemoGenerator {
 
-        CellPresetFunction<ExcelCell> presetField = c -> c.font()
-                .bold(true)
-                .back()
-                .alignVerticalCenter();
+        public ExcelRow generateHeader(ExcelSheet sheet) {
+            sheet.autoColumnWidth(0)
+                    .autoColumnWidth(1)
+                    .autoColumnWidth(2)
+                    .autoColumnWidth(3);
 
-        List<String> items = Arrays.asList(
-                "Arch QP", "Arch",
-                "C & S QP", "EE",
-                "ME", "CM", "RE",
-                "RTO", "Others"
-        );
+            CellPresetFunction<ExcelCell> preset = cell -> cell
+                    .font()
+                    .bold(true)
+                    .back()
+                    .alignCenter();
 
-
-        for (int j = 25+15;j<24+15+29;j++){
-            for (int i = 3;i<=18;i++){
-                sheet.rowAt(j).cell(i).borderTop(BorderStyle.MEDIUM).borderColor("#000").backToRow()
-                        .cell(i).borderLeft(BorderStyle.MEDIUM).borderColor("#000").backToRow()
-                        .cell(i).borderRight(BorderStyle.MEDIUM).borderColor("#000").backToRow()
-                        .cell(i).borderBottom(BorderStyle.MEDIUM).borderColor("#000").shape().ellipse().color("#000").cross(2,1);
-
-            }
+            return sheet.rowAt(0).presetCell(preset)
+                    .cell(0).text("姓名")
+                    .nextCell().text("年龄")
+                    .nextCell().text("生日")
+                    .nextCell().text("性别")
+                    .backToRow();
         }
 
-        workbook.write(new FileOutputStream("test.xlsx"));
+        public void generatePerson(ExcelCell cell, Person person) {
+            cell.text(person.getName()).nextCell()
+                    .text(person.getAge()).nextCell()
+                    .text(person.getBirthDay()).nextCell()
+                    .text(person.getGender());
+        }
+
+        public ExcelSimpleGenerator createGenerator() {
+            return new ExcelSimpleGenerator()
+                    .generateExcelStructure(this::generateHeader)
+                    .strategy(Person.class, this::generatePerson);
+        }
+
+    }
+
+
+    public static class PipedDemoGenerator {
+
+        public ExcelRow generateHeader(PipedGenerationContext ctx, ExcelSheet sheet) {
+            sheet.autoColumnWidth(0)
+                    .autoColumnWidth(1)
+                    .autoColumnWidth(2)
+                    .autoColumnWidth(3);
+
+            CellPresetFunction<ExcelCell> preset = cell -> cell
+                    .font()
+                    .bold(true)
+                    .back()
+                    .alignCenter();
+
+            return sheet.rowAt(0).presetCell(preset)
+                    .cell(0).text("姓名")
+                    .nextCell().text("年龄")
+                    .nextCell().text("生日")
+                    .nextCell().text("性别")
+                    .backToRow();
+        }
+
+        public void generatePerson(PipedGenerationContext ctx, ExcelSheet sheet) {
+            sheet.rowAt(1).forOf(ctx.getGrouped(Person.class), (cell, person) -> {
+                cell.text(person.getName()).nextCell()
+                        .text(person.getAge()).nextCell()
+                        .text(person.getBirthDay()).nextCell()
+                        .text(person.getGender());
+            });
+        }
+
+        public PipedExcelGenerator createGenerator() {
+            return new PipedExcelGenerator()
+                    .generateStage(this::generateHeader)
+                    .generateStage(this::generatePerson);
+        }
+
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        List<Person> personList = Arrays.asList(
+                new Person("张三","20","Male","2021/3/1"),
+                new Person("张三3","20","Male","2021/3/3"),
+                new Person("张三1","20","Male","2021/4/1"),
+                new Person("张三4","20","Male","2021/6/1"),
+                new Person("张三6","20","Male","2021/3/8"),
+                new Person("张三5","20","Male","2021/7/6")
+        );
+
+        DemoGenerator generator = new DemoGenerator();
+        generator.createGenerator()
+                .createExcel(
+                        "SheetA",
+                        personList,
+                        new FileOutputStream("test2.xlsx")
+                );
+
+
+
+        PipedExcelGenerator pipedDemoGenerator = new PipedDemoGenerator().createGenerator();
+        pipedDemoGenerator.createExcel("Sheet A",personList,new FileOutputStream("test3.xlsx"));
     }
 
 }
