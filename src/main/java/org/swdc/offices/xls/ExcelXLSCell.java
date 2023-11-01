@@ -3,14 +3,10 @@ package org.swdc.offices.xls;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.swdc.offices.CellPresetFunction;
-import org.swdc.offices.UIUtils;
-import org.swdc.offices.xlsx.ExcelCell;
+import org.swdc.offices.UnitUtils;
 
 import java.awt.Color;
 import java.util.Date;
@@ -140,7 +136,7 @@ public class ExcelXLSCell {
      * @return 单元格颜色
      */
     private HSSFColor addColor(Color color) {
-        return UIUtils.prepareHSSFColor(
+        return UnitUtils.prepareHSSFColor(
                 cell.getSheet().getWorkbook(),
                 color
         );
@@ -158,7 +154,7 @@ public class ExcelXLSCell {
         if (color == null || color.isEmpty()) {
             return this;
         }
-        Color awtColor = UIUtils.fromString(color);
+        Color awtColor = UnitUtils.fromString(color);
         if (awtColor == null) {
             return this;
         }

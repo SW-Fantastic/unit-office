@@ -3,10 +3,50 @@ package org.swdc.offices;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.swdc.offices.generator.GenerateFunction;
+import org.swdc.offices.generator.GeneratorStage;
+import org.swdc.offices.generator.PipedGenerationContext;
 
 import java.awt.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 
-public class UIUtils {
+public class UnitUtils {
+
+
+    public static <S> List<GenerateFunction<S>> extractGenerateStages(Object strategy, Class<S> sheetType) {
+
+        Class currType = strategy.getClass();
+        List<GenerateFunction<S>> functions = new ArrayList<>();
+
+        while (currType != Object.class) {
+            Method[] methods = currType.getDeclaredMethods();
+            for (Method m: methods) {
+                GeneratorStage stage = m.getAnnotation(GeneratorStage.class);
+                if (stage == null) {
+                    continue;
+                }
+                Parameter[] params = m.getParameters();
+                if (params.length == 2 && params[0].getType().equals(PipedGenerationContext.class) && params[1].getType().equals(sheetType)) {
+                    m.setAccessible(true);
+                    GenerateFunction<S> function = (ctx, sheet) -> {
+                        try {
+                            m.invoke(strategy,ctx,sheet);
+                        } catch (Throwable t) {
+                            throw new RuntimeException(t);
+                        }
+                    };
+                    functions.add(function);
+                }
+            }
+            currType = currType.getSuperclass();
+        }
+
+        return functions;
+    }
+
 
     /**
      * 工具方法，用于将字符串进行重复（用于兼容Java8）

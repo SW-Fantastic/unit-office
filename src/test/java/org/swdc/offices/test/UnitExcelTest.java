@@ -1,6 +1,7 @@
 package org.swdc.offices.test;
 
 import org.swdc.offices.CellPresetFunction;
+import org.swdc.offices.generator.GeneratorStage;
 import org.swdc.offices.generator.PipedExcelGenerator;
 import org.swdc.offices.generator.PipedGenerationContext;
 import org.swdc.offices.xlsx.ExcelCell;
@@ -129,6 +130,42 @@ public class UnitExcelTest {
 
     }
 
+
+    public static class DemoStrategies {
+
+        @GeneratorStage
+        public ExcelRow generateHeader(PipedGenerationContext ctx, ExcelSheet sheet) {
+            sheet.autoColumnWidth(0)
+                    .autoColumnWidth(1)
+                    .autoColumnWidth(2)
+                    .autoColumnWidth(3);
+
+            CellPresetFunction<ExcelCell> preset = cell -> cell
+                    .font()
+                    .bold(true)
+                    .back()
+                    .alignCenter();
+
+            return sheet.rowAt(0).presetCell(preset)
+                    .cell(0).text("姓名")
+                    .nextCell().text("年龄")
+                    .nextCell().text("生日")
+                    .nextCell().text("性别")
+                    .backToRow();
+        }
+
+        @GeneratorStage
+        public void generatePerson(PipedGenerationContext ctx, ExcelSheet sheet) {
+            sheet.rowAt(1).forOf(ctx.getGrouped(Person.class), (cell, person) -> {
+                cell.text(person.getName()).nextCell()
+                        .text(person.getAge()).nextCell()
+                        .text(person.getBirthDay()).nextCell()
+                        .text(person.getGender());
+            });
+        }
+
+    }
+
     public static void main(String[] args) throws IOException {
 
         List<Person> personList = Arrays.asList(
@@ -152,6 +189,10 @@ public class UnitExcelTest {
 
         PipedExcelGenerator pipedDemoGenerator = new PipedDemoGenerator().createGenerator();
         pipedDemoGenerator.createExcel("Sheet A",personList,new FileOutputStream("test3.xlsx"));
+
+        PipedExcelGenerator pipedStrategyGenerator = new PipedExcelGenerator()
+                .generateStages(new DemoStrategies());
+        pipedStrategyGenerator.createExcel("Sheet A",personList,new FileOutputStream("test4.xlsx"));
     }
 
 }

@@ -1,8 +1,7 @@
 package org.swdc.offices.xls;
 
 import org.apache.poi.hssf.usermodel.*;
-import org.swdc.offices.UIUtils;
-import org.swdc.offices.xlsx.ExcelShape;
+import org.swdc.offices.UnitUtils;
 
 import java.awt.*;
 
@@ -88,7 +87,7 @@ public class ExcelXLSShape<T> {
         if (color == null || color.isEmpty()) {
             return this;
         }
-        Color awtColor = UIUtils.fromString(color);
+        Color awtColor = UnitUtils.fromString(color);
         if (awtColor == null) {
             return this;
         }
@@ -106,7 +105,7 @@ public class ExcelXLSShape<T> {
             shape.setNoFill(true);
             return this;
         }
-        Color awtColor = UIUtils.fromString(color);
+        Color awtColor = UnitUtils.fromString(color);
         if (awtColor == null) {
             shape.setNoFill(true);
             return this;

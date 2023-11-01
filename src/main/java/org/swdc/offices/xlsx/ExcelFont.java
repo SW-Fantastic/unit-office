@@ -3,7 +3,7 @@ package org.swdc.offices.xlsx;
 import org.apache.poi.ss.usermodel.FontUnderline;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.swdc.offices.UIUtils;
+import org.swdc.offices.UnitUtils;
 
 import java.awt.*;
 import java.util.function.Consumer;
@@ -95,7 +95,7 @@ public class ExcelFont<T> {
         if (color == null || color.isBlank()) {
             return this;
         }
-        Color theColor = UIUtils.fromString(color);
+        Color theColor = UnitUtils.fromString(color);
         if (theColor == null) {
             return this;
         }

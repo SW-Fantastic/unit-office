@@ -1,11 +1,10 @@
 package org.swdc.offices.xls;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Font;
-import org.swdc.offices.UIUtils;
+import org.swdc.offices.UnitUtils;
 
 import java.awt.Color;
 import java.util.function.Consumer;
@@ -101,11 +100,11 @@ public class ExcelXLSFont<T> {
         if (color == null || color.isBlank()) {
             return this;
         }
-        Color theColor = UIUtils.fromString(color);
+        Color theColor = UnitUtils.fromString(color);
         if (theColor == null) {
             return this;
         }
-        HSSFColor realColor = UIUtils.prepareHSSFColor(
+        HSSFColor realColor = UnitUtils.prepareHSSFColor(
                 sheet.getWorkbook(),
                 theColor
         );

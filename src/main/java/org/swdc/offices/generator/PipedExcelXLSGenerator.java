@@ -2,6 +2,7 @@ package org.swdc.offices.generator;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.swdc.offices.UnitUtils;
 import org.swdc.offices.xls.ExcelXLSSheet;
 import org.swdc.offices.xlsx.ExcelSheet;
 
@@ -15,14 +16,14 @@ import java.util.List;
  * 如果你在生成一个复杂的Excel，直接把所有的Excel API
  * 放在一个代码块中，这是非常不明智的，这不利于未来的修改和维护，
  * 使用本项目创建Excel，有时代码会十分冗长，通过本类可以协助你创建
- * 一个具备更高可维护性的Excel导出类。
+ * 一个具备更高可维护性的Excel导出类。<br/><br/>
  *
  * 首先，请按照GenerateFunction的方法generate(PipedGenerationContext context,S sheet)
  * 的格式编写生成Excel内容的方法，请自行决定应该以什么方式划分Excel生成的阶段，例如，你可以把它划分为
  * 生成表头，生成内容，生成结尾，生成边框四个部分，分别提供四个方法，这些方法的参数需要与GenerateFunction的
- * generate方法一致。
+ * generate方法一致。<br/><br/>
  *
- * 接下来，请创建一个方法来生成本类的对象，通过此对象，你将得到需要的Excel文件。
+ * 接下来，请创建一个方法来生成本类的对象，通过此对象，你将得到需要的Excel文件。<br/><br/>
  *
  * <pre>
  *     public class PipedDemoGenerator {
@@ -66,8 +67,11 @@ import java.util.List;
  *         }
  *
  *     }
- * </pre>
- *
+ * </pre><br/><br/>
+ * 当然，上述的方法还需要自己通过本类的generateStrategy方法注册自己的生成逻辑，我认为这有点麻烦，因此特地增加了一个新的方法：
+ * 现在你可以在一个单独的Class中，编写任意void类型，并且参数表与GenerateFunction一致的方法，并且在这些方法的内部执行Excel生成，
+ * 你需要在方法上标记GeneratorStage注解，然后直接使用本类的generateStages方法，并且传入此类的对象，那么里面包含的所有生成阶段
+ * 都会自动注册到本生成器，你可以直接使用createExcel来生成电子表格。
  */
 public class PipedExcelXLSGenerator {
 
@@ -96,6 +100,22 @@ public class PipedExcelXLSGenerator {
         generateFunctions.addLast(stage);
         return this;
     }
+
+    /**
+     * 使用生成策略对象。
+     * @param strategies 生成策略对象，此对象的所有符合GenerateFunction定义，并且标注
+     *                   GeneratorStage注解的方法将会被自动添加为生成阶段。
+     * @return 本对象。
+     */
+    public PipedExcelXLSGenerator generateStages(Object strategies) {
+        List<GenerateFunction<ExcelXLSSheet>> functions = UnitUtils
+                .extractGenerateStages(strategies, ExcelXLSSheet.class);
+        for (GenerateFunction<ExcelXLSSheet> func: functions) {
+            generateStage(func);
+        }
+        return this;
+    }
+
 
     /**
      * 生成Excel

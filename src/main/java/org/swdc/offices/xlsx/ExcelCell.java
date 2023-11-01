@@ -3,7 +3,7 @@ package org.swdc.offices.xlsx;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.swdc.offices.CellPresetFunction;
-import org.swdc.offices.UIUtils;
+import org.swdc.offices.UnitUtils;
 
 import java.awt.Color;
 import java.util.Date;
@@ -153,7 +153,7 @@ public class ExcelCell {
         if (color == null || color.isBlank()) {
             return this;
         }
-        Color awtColor = UIUtils.fromString(color);
+        Color awtColor = UnitUtils.fromString(color);
         if (awtColor == null) {
             return this;
         }

@@ -2,7 +2,7 @@ package org.swdc.offices.xlsx;
 
 import org.apache.poi.ss.usermodel.ShapeTypes;
 import org.apache.poi.xssf.usermodel.*;
-import org.swdc.offices.UIUtils;
+import org.swdc.offices.UnitUtils;
 
 import java.awt.*;
 
@@ -72,7 +72,7 @@ public class ExcelShape<T> {
         if (color == null || color.isEmpty()) {
             return this;
         }
-        Color awtColor = UIUtils.fromString(color);
+        Color awtColor = UnitUtils.fromString(color);
         if (awtColor == null) {
             return this;
         }
@@ -90,7 +90,7 @@ public class ExcelShape<T> {
             shape.setNoFill(true);
             return this;
         }
-        Color awtColor = UIUtils.fromString(color);
+        Color awtColor = UnitUtils.fromString(color);
         if (awtColor == null) {
             shape.setNoFill(true);
             return this;
